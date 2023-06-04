@@ -3,14 +3,13 @@
 # SPDX-License-Identifier: MIT
 
 PLATFORM := xilinx_vck5000_gen4x8_qdma_2_202220_1
-# PLATFORM := $HOME/local/opt/xilinx/platforms/xilinx_vck5000_gen4x8_qdma_2_202220_1
 TARGET := hw
 #TARGET := x86sim
 FREQ := 250
 
 # XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
 XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
-# XSA = $(strip $(patsubst %.xpfm, % , $(shell basename $(PLATFORM))))
+XSA = $(strip $(patsubst %.xpfm, % , $(shell basename $(PLATFORM))))
 DSPLIB_ROOT = $(shell readlink -f ../../Vitis_Libraries/dsp)
 
 # OUTPUT PRODUCTS 
