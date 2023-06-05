@@ -36,7 +36,6 @@ AIE_FLAGS += -include=$(DSPLIB_ROOT)/L1/tests/aie/src
 AIE_FLAGS += -include=$(DSPLIB_ROOT)/L2/include/aie
 AIE_FLAGS += -include=$(DSPLIB_ROOT)/L2/tests/aie/common/inc
 
-
 AIE_FLAGS += --pl-freq=$(FREQ)
 AIE_FLAGS += --dataflow
 AIE_FLAGS += --Xchess="main:bridge.llibs=softfloat m"
@@ -61,7 +60,7 @@ clean:
 aieemu:
 	cd $(BUILD_DIR); \
 	aiesimulator --pkg-dir=$(WORK_DIR) --i=.. --profile --dump-vcd=foo; \
-  cp aiesimulator_output/$(OUTPUT) $(DATA_DIR)/
+	cp aiesimulator_output/$(OUTPUT) $(DATA_DIR)/
 
 x86sim:
 	cd $(BUILD_DIR); \
