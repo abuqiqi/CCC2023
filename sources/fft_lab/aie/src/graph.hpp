@@ -25,16 +25,16 @@ class SpectrumGraph: public graph {
 class DSPLibGraph: public graph {
     private:
         FFT1d_graph fft;
-        SpectrumGraph spectrum;
+        // SpectrumGraph spectrum;
         
     public:
-        adf::input_plio s_in[4];
-        adf::output_plio s_out[6];
+        adf::input_plio s_in[1];
+        adf::output_plio s_out[1];
         DSPLibGraph() {
             // FFT connections
-            s_in[1] = input_plio::create("DataInFFT0", adf::plio_128_bits, "data/DataInFFT0.txt");
-            s_out[1] = output_plio::create("DataOutFFT0", adf::plio_128_bits, "DataOutFFT0.txt");
-            adf::connect<stream> (s_in[1].out[0],  fft.in);
-            adf::connect<stream> (fft.out, s_out[1].in[0]);
+            s_in[0] = input_plio::create("DataInFFT0", adf::plio_128_bits, "data/DataInFFT0.txt");
+            s_out[0] = output_plio::create("DataOutFFT0", adf::plio_128_bits, "DataOutFFT0.txt");
+            adf::connect<stream> (s_in[0].out[0],  fft.in);
+            adf::connect<stream> (fft.out, s_out[0].in[0]);
         }
 };
