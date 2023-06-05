@@ -6,6 +6,7 @@ PLATFORM := xilinx_vck5000_gen4x8_qdma_2_202220_1
 TARGET := hw
 #TARGET := x86sim
 FREQ := 250
+OUTPUT := DataOutFFT0.txt
 
 # XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
 XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
@@ -22,10 +23,9 @@ CONSTRAINTS_DIR = $(shell readlink -f constraints/)
 # DEPENDENCIES for make aie
 GRAPH_CPP := $(SRC_DIR)/graph.cpp
 DEPS := $(GRAPH_CPP)
-# DEPS += $(SRC_DIR)/graph.h
 DEPS += $(SRC_DIR)/graph.hpp
-DEPS += $(SRC_DIR)/fft.hpp
 # Add your own dependencies
+DEPS += $(SRC_DIR)/fft.hpp
 
 AIE_FLAGS = --platform=$(XPFM)
 AIE_FLAGS += --constraints=$(CONSTRAINTS_DIR)/constraints.aiecst
@@ -60,7 +60,8 @@ clean:
 
 aieemu:
 	cd $(BUILD_DIR); \
-	aiesimulator --pkg-dir=$(WORK_DIR) --i=.. --profile --dump-vcd=foo
+	aiesimulator --pkg-dir=$(WORK_DIR) --i=.. --profile --dump-vcd=foo; \
+  cp aiesimulator_output/$(OUTPUT) $(DATA_DIR)/
 
 x86sim:
 	cd $(BUILD_DIR); \
