@@ -35,6 +35,7 @@ $(BUILD_DIR):
 $(EXECUTABLE): $(BUILD_DIR)/host.o
 	g++ $^ $(LIBS) -std=c++17 -o $@
 	@echo "COMPLETE: Host application $@ created."
+	mv $(EXECUTABLE) ../execution/
 
 # Create object files
 $(BUILD_DIR)/host.o: host.cpp

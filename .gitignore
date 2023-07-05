@@ -1,1 +1,8 @@
 sources/fft_lab/aie/build.hw/
+sources/fft_cint16/build.hw/
+sources/fft_cint16/aie/build.hw/
+sources/fft_cint16/pl/build.hw/
+sources/fft_cint16/pl/_x/
+sources/fft_cint16/pl/.Xil/
+sources/fft_cint16/pl/*.log
+sources/fft_cint16/host/build/
