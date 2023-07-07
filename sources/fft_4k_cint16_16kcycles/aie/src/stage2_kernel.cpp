@@ -46,5 +46,5 @@ void fft_stage2(input_window<cint16> *x_in0,input_window<cint16> *x_in1,input_wi
         *itery3++=res.to_vector<cint16>(0);
     }
 
-    printf("stage2: %llu\n", tile.cycles());
+    // printf("stage2: %llu\n", tile.cycles());
 }

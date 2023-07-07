@@ -160,7 +160,7 @@ void radix2_dit(input_window<cint16> *x_in, output_window<cint16> *y_out)
     // --------------------------------shuffle--------------------------------
 
     aie::tile tile = aie::tile::current();
-    printf("before shuffle: %llu\n", tile.cycles());
+    // printf("before shuffle: %llu\n", tile.cycles());
 
     for (unsigned i = 0; i < N_SWAP_2; i += 2)
         chess_unroll_loop(8)
@@ -204,7 +204,7 @@ void radix2_dit(input_window<cint16> *x_in, output_window<cint16> *y_out)
     y[975] = x[975];
     y[1023] = x[1023];
 
-    printf("shuffled: %llu\n", tile.cycles());
+    // printf("shuffled: %llu\n", tile.cycles());
 
     // ----------------------------------dit----------------------------------
 
@@ -245,7 +245,7 @@ void radix2_dit(input_window<cint16> *x_in, output_window<cint16> *y_out)
     //     store_v(p,m.to_vector<cint16>(MAT_OMG_SHIFT));
     // }
 
-    printf("l<=MAX_VEC_LEN: %llu\n", tile.cycles());
+    // printf("l<=MAX_VEC_LEN: %llu\n", tile.cycles());
     
 
     if (id==0){
@@ -255,19 +255,19 @@ void radix2_dit(input_window<cint16> *x_in, output_window<cint16> *y_out)
         //     printf("btf l=%u: %llu\n", l, tile.cycles());
         // }
         butterfly(16, x, y);
-        printf("id:0 btf l=16: %llu\n", tile.cycles());
+        // printf("id:0 btf l=16: %llu\n", tile.cycles());
         butterfly(32, y, x);
-        printf("id:0 btf l=32: %llu\n", tile.cycles());
+        // printf("id:0 btf l=32: %llu\n", tile.cycles());
         butterfly(64, x, y);
-        printf("id:0 btf l=64: %llu\n", tile.cycles());
+        // printf("id:0 btf l=64: %llu\n", tile.cycles());
         butterfly(128, y, x);
-        printf("id:0 btf l=128: %llu\n", tile.cycles());
+        // printf("id:0 btf l=128: %llu\n", tile.cycles());
         butterfly_256(256, x, y);
-        printf("id:0 btf l=256: %llu\n", tile.cycles());
+        // printf("id:0 btf l=256: %llu\n", tile.cycles());
         butterfly_512(512, y, x);
-        printf("id:0 btf l=512: %llu\n", tile.cycles());
+        // printf("id:0 btf l=512: %llu\n", tile.cycles());
         butterfly_1024(N_POINT, x, y);
-        printf("id:0 btf l=%u: %llu\n", N_POINT, tile.cycles());
+        // printf("id:0 btf l=%u: %llu\n", N_POINT, tile.cycles());
     }
     else {
         // for (unsigned l = MAX_VEC_LEN << 1; l <= N_POINT >> 3; l <<= 1)
@@ -276,19 +276,19 @@ void radix2_dit(input_window<cint16> *x_in, output_window<cint16> *y_out)
         //     printf("btf l=%u: %llu\n", l, tile.cycles());
         // }
         butterfly(16, x, y);
-        printf("btf l=16: %llu\n", tile.cycles());
+        // printf("btf l=16: %llu\n", tile.cycles());
         butterfly(32, y, x);
-        printf("btf l=32: %llu\n", tile.cycles());
+        // printf("btf l=32: %llu\n", tile.cycles());
         butterfly(64, x, y);
-        printf("btf l=64: %llu\n", tile.cycles());
+        // printf("btf l=64: %llu\n", tile.cycles());
         butterfly(128, y, x);
-        printf("btf l=128: %llu\n", tile.cycles());
+        // printf("btf l=128: %llu\n", tile.cycles());
         butterfly_256(256, x, y);
-        printf("btf l=256: %llu\n", tile.cycles());
+        // printf("btf l=256: %llu\n", tile.cycles());
         butterfly_512(512, y, x);
-        printf("btf l=512: %llu\n", tile.cycles());
+        // printf("btf l=512: %llu\n", tile.cycles());
         butterfly_1024(N_POINT, x, y);
-        printf("btf l=%u: %llu\n", N_POINT, tile.cycles());
+        // printf("btf l=%u: %llu\n", N_POINT, tile.cycles());
         switch (id)
         {
         case 1:
@@ -303,7 +303,7 @@ void radix2_dit(input_window<cint16> *x_in, output_window<cint16> *y_out)
         }
     }
 
-    printf("dit: %llu\n", tile.cycles());
+    // printf("dit: %llu\n", tile.cycles());
 
     return;
 }
