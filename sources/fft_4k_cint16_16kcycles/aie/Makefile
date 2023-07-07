@@ -11,7 +11,12 @@ OUTPUT1 := DataOutFFT1.txt
 OUTPUT2 := DataOutFFT2.txt
 OUTPUT3 := DataOutFFT3.txt
 
-XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
+# ##############################
+# CHANGE PLATFORM !!!
+# ##############################
+# XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
+XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
+# ##############################
 XSA = $(strip $(patsubst %.xpfm, % , $(shell basename $(PLATFORM))))
 
 # OUTPUT PRODUCTS 
