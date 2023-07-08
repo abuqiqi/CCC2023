@@ -10,8 +10,8 @@
 
 本项目实现的是FFT赛题，完成情况如下。
 
-- 完成了1024点`cint16`类型的小规模FFT算法的AIE设计、优化和仿真；
-- 探索了AIE kernel之间的连接，扩展到更大点数的FFT；
+- 完成了1024点`cint16`、`cfloat`类型的小规模FFT算法的AIE设计、优化和仿真；
+- 探索了AIE kernel之间的连接，扩展到更大点数（4k、8k）的`cint16`类型的FFT；
 - 实现了PL和AIE的数据连接，可以从host端调用，完成了系统级的仿真并能够在VCK5000硬件上运行。
 
 ## 相关文档
@@ -25,14 +25,14 @@
 
 ```shell
 # 编译并运行AIE仿真
-cd ./CCC2023/sources/fft/aie
+cd ./CCC2023/sources/fft_4k/aie
 make
 make aieemu
 ```
 
 2. 硬件运行
 
-在`sources/fft/execution`文件夹下存放了通过主机调用PL和AIE必要的`fft.xclbin`文件、`host.exe`文件和输入文件`DataInFFTO.txt`，以及运行完毕所产生的输出文件`DataOutFFT0.txt`。如需在VCK5000上运行，可执行以下代码。
+在`sources/fft_4k/execution`文件夹下存放了通过主机调用PL和AIE必要的`fft.xclbin`文件、`host.exe`文件和输入文件`DataInFFTO.txt`，以及运行完毕所产生的输出文件`DataOutFFT0.txt`。如需在VCK5000上运行，可执行以下代码。
 
 ```shell
 # 克隆hacc_demo仓库
@@ -43,10 +43,10 @@ git clone https://github.com/Xtra-Computing/hacc_demo.git
 source ./hacc_demo/env/vck5000_env
 
 # 在本项目的execution文件夹下运行可执行文件
-./CCC2023/sources/fft/execution/host.exe
+./CCC2023/sources/fft_4k/execution/host.exe
 
 # 退出节点
 ./hacc_demo/env/vck5000_exit
 ```
 
-执行完毕后，可使用`sources/fft/notebook`文件夹下的`fft.ipynb`验证输出结果。
+执行完毕后，可使用`sources/fft_4k/notebook`文件夹下的`fft.ipynb`验证输出结果。
