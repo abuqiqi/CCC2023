@@ -83,6 +83,7 @@ $(OUTPUT_DIR)/${XCLBIN_NAME}.xclbin: $(OUTPUT_DIR)/${XCLBIN_NAME}.xsa
 	  --package.boot_mode=ospi \
 	  -o $@ 2>&1 | tee $(XCLBIN_NAME)_xclbin.log
 	@echo "### ***** $(XCLBIN_NAME).xclbin packaging done! *****"
+	cp ${XCLBIN_NAME}.xclbin ../execution/
 
 clean:
 	rm -rf *.log *.jou .Xil/

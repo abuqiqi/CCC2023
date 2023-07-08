@@ -159,7 +159,7 @@ void radix2_dit(input_window<cint16> *x_in, output_window<cint16> *y_out)
         for (unsigned i=1;i<MAX_VEC_LEN;i++){
             m=mac(m,*iter++,*(p+i));
         }
-        store_v(p,m.to_vector<cint16>(-5));
+        store_v(p,m.to_vector<cint16>(5));
     }
     printf("l<=MAX_VEC_LEN: %llu\n", tile.cycles());
     for (unsigned l = MAX_VEC_LEN << 1; l <= N_POINT >> 1; l <<= 1)
