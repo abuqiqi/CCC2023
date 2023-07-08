@@ -6,14 +6,20 @@
 > 
 > 参赛队员：白卓岩、堵仪萱、徐珑珊
 
-## 选题描述
-本项目实现的是FFT赛题。
+## 工作概述
+
+本项目实现的是FFT赛题，完成情况如下。
+
+- 完成了AIE上FFT的设计和仿真，数据类型为`cint16`。
+- 完成了PL和AIE的数据连接，可以从host端调用，在硬件上执行。
 
 ## 相关文档
 - 设计报告：
 - 工作日志：见本仓库的[backup分支](https://github.com/abuqiqi/CCC2023/tree/backup)。
 
 ## 代码运行
+1. AIE仿真
+
 执行以下代码可以单独运行AIE的仿真。
 
 ```shell
@@ -22,6 +28,8 @@ cd ./CCC2023/sources/fft/aie
 make
 make aieemu
 ```
+
+2. 硬件运行
 
 在`sources/fft/execution`文件夹下存放了通过主机调用PL和AIE必要的`fft.xclbin`文件、`host.exe`文件和输入文件`DataInFFTO.txt`，以及运行完毕所产生的输出文件`DataOutFFT0.txt`。如需在VCK5000上运行，可执行以下代码。
 
@@ -33,7 +41,7 @@ git clone https://github.com/Xtra-Computing/hacc_demo.git
 ./hacc_demo/env/vck5000_alloc 3
 source ./hacc_demo/env/vck5000_env
 
-# 进入本项目execution文件夹，并运行可执行文件
+# 在本项目的execution文件夹下运行可执行文件
 ./CCC2023/sources/fft/execution/host.exe
 
 # 退出节点
@@ -41,5 +49,3 @@ source ./hacc_demo/env/vck5000_env
 ```
 
 执行完毕后，可使用`sources/fft/notebook`文件夹下的`fft.ipynb`验证输出结果。
-
-## 参考资料
