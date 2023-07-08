@@ -11,6 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdint>
+#include <chrono>
 
 #include "xrt.h"
 #include "experimental/xrt_kernel.h"
@@ -51,14 +52,17 @@ int main(int argc, char** argv) {
     xrt::run run_dm_out[NPOINTS];
     size_t samples_size = sizeof(int16_t) * NSAMPLES * 2;
 
+    // Start timer
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     for (int i = 0; i < NPOINTS; ++ i) {
         // Get reference to the kernels
-        std::cout << "Get references to datamovers compute units" << std::endl;
+        // std::cout << "Get references to datamovers compute units" << std::endl;
         dm_in[i] = xrt::kernel(device, uuid, "mm2s:{mm2s_fft_"+ std::to_string(i) +"}");
         dm_out[i] = xrt::kernel(device, uuid, "s2mm:{s2mm_fft_"+ std::to_string(i) +"}");
 
         // Allocating the input size of sizeIn to MM2S
-        std::cout << "Allocate Buffer in Global Memory" << std::endl;
+        // std::cout << "Allocate Buffer in Global Memory" << std::endl;
         in_buff[i] = xrt::bo(device, samples_size, dm_in[i].group_id(0));
         out_buff[i] = xrt::bo(device, samples_size, dm_out[i].group_id(0));
 
@@ -71,7 +75,7 @@ int main(int argc, char** argv) {
         // Execute the compute units
         run_dm_in[i] = dm_in[i](in_buff[i], nullptr, NSAMPLES/4); // mm2s -> aie
         run_dm_out[i] = dm_out[i](out_buff[i], nullptr, NSAMPLES/4); // aie -> s2mm
-        std::cout << "Kernels started" << std::endl;
+        // std::cout << "Kernels started" << std::endl;
     }
 
     // Wait for kernels to complete
@@ -88,6 +92,9 @@ int main(int argc, char** argv) {
         out_buff[i].read(&(fft_result[i * NSAMPLES][0]));
     }
 
+    // Stop timer
+    auto end_time = std::chrono::high_resolution_clock::now();
+
     // Output the data
     std::ofstream outfile("DataOutFFT0.txt");
     for (int i = 0; i < NPOINTS * NSAMPLES; i++) {
@@ -95,24 +102,8 @@ int main(int argc, char** argv) {
     }
     outfile.close();
 
-    std::cout << "TEST PASSED" << std::endl;
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    std::cout << "TEST PASSED (" << duration.count() << " us)" << std::endl;
 
     return 0;
-
-    // auto mm2s_0 = xrt::kernel(device, uuid, "mm2s:{mm2s_fft_0}");
-    // auto s2mm_0 = xrt::kernel(device, uuid, "s2mm:{s2mm_fft_0}");
-
-    // auto in_buff_1 = xrt::bo(device, samples_size, mm2s_0.group_id(0));
-    // auto out_buff_1 = xrt::bo(device, samples_size, s2mm_0.group_id(0));
-
-    // in_buff_1.write(sample_vector); // infile -> sample_vector -> in_buff_1
-    
-    // in_buff_1.sync(XCL_BO_SYNC_BO_TO_DEVICE);
-
-    // auto run_mm2s_0 = mm2s_0(in_buff_1, nullptr, NSAMPLES/4);
-    // auto run_s2mm_0 = s2mm_0(out_buff_1, nullptr, NSAMPLES/4);
-
-    // run_mm2s_0.wait();
-    // run_s2mm_0.wait();
-
 }
