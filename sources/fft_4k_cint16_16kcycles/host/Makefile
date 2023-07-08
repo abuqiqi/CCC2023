@@ -6,7 +6,6 @@ FLAGS := -Wall -c -g -fmessage-length=0
 FLAGS += -std=c++17 -Wno-unknown-pragmas -Wno-unused-label
 FLAGS += -Wno-int-to-pointer-cast
 
-
 INCLUDES +=	-I$(XILINX_VITIS)/aietools/include
 INCLUDES +=	-I$(XILINX_VITIS)/include
 INCLUDES +=	-I$(XILINX_XRT)/include
