@@ -1,4 +1,4 @@
-# CCFSys定制计算挑战赛
+# CCFSys定制计算挑战赛2023
 
 > 参赛学校：华东师范大学
 > 
@@ -10,11 +10,12 @@
 
 本项目实现的是FFT赛题，完成情况如下。
 
-- 完成了AIE上FFT的设计和仿真，数据类型为`cint16`。
-- 完成了PL和AIE的数据连接，可以从host端调用，在硬件上执行。
+- 完成了1024点`cint16`类型的小规模FFT算法的AIE设计、优化和仿真；
+- 探索了AIE kernel之间的连接，扩展到更大点数的FFT；
+- 完成了PL和AIE的数据连接，可以从host端调用，在VCK5000硬件上执行。
 
 ## 相关文档
-- 设计报告：
+- 设计报告：[设计报告](https://github.com/abuqiqi/CCC2023/blob/main/%E8%AE%BE%E8%AE%A1%E6%8A%A5%E5%91%8A.pdf)。
 - 工作日志：见本仓库的[backup分支](https://github.com/abuqiqi/CCC2023/tree/backup)。
 
 ## 代码运行
