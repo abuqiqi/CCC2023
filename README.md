@@ -18,4 +18,5 @@
     - fft_1k_pl：在fft_v2_cint16_aie的基础上，增加pl、host，可以在vck5000上运行。
     - fft_4k_v1_pl：在fft_1k_pl的基础上，修改AIE、PL，将点数扩展到4096。
     - fft_4k_v2_pl：在fft_4k_v1_pl的基础上，优化了AIE设计，AIE部分需要16000个cycle。
-    - fft_4k_v3_pl：在fft_4k_v2_pl的基础上，AIE优化到需要14000个cycle。
+    - fft_4k_v3_pl（同main分支下的fft_4k）：在fft_4k_v2_pl的基础上，AIE优化到需要14000个cycle。
+    - fft_8k（同main分支下的fft_8k）：将点数扩展到8192。
