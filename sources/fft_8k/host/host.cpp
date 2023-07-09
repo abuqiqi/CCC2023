@@ -45,26 +45,20 @@ int main(int argc, char** argv) {
 
     // Create datamover objects, in/out buffer
     xrt::kernel dm_in[NPOINTS];
-    xrt::kernel dm_out[NPOINTS];
     xrt::bo in_buff[NPOINTS];
-    xrt::bo out_buff[NPOINTS];
     xrt::run run_dm_in[NPOINTS];
-    xrt::run run_dm_out[NPOINTS];
-    size_t samples_size = sizeof(int16_t) * NSAMPLES * 2;
+    size_t samples_size = sizeof(int16_t) * NSAMPLES * 2; // 32 * 1024
 
     // Start timer
     auto start_time = std::chrono::high_resolution_clock::now();
 
+    // mm2s -> aie
     for (int i = 0; i < NPOINTS; ++ i) {
         // Get reference to the kernels
-        // std::cout << "Get references to datamovers compute units" << std::endl;
         dm_in[i] = xrt::kernel(device, uuid, "mm2s:{mm2s_fft_"+ std::to_string(i) +"}");
-        dm_out[i] = xrt::kernel(device, uuid, "s2mm:{s2mm_fft_"+ std::to_string(i) +"}");
 
         // Allocating the input size of sizeIn to MM2S
-        // std::cout << "Allocate Buffer in Global Memory" << std::endl;
         in_buff[i] = xrt::bo(device, samples_size, dm_in[i].group_id(0));
-        out_buff[i] = xrt::bo(device, samples_size, dm_out[i].group_id(0));
 
         // Write data to compute unit buffers
         in_buff[i].write(&(sample_vector[i * NSAMPLES][0]));
@@ -73,24 +67,25 @@ int main(int argc, char** argv) {
         in_buff[i].sync(XCL_BO_SYNC_BO_TO_DEVICE);
 
         // Execute the compute units
-        run_dm_in[i] = dm_in[i](in_buff[i], nullptr, NSAMPLES/4); // mm2s -> aie
-        run_dm_out[i] = dm_out[i](out_buff[i], nullptr, NSAMPLES/4); // aie -> s2mm
-        // std::cout << "Kernels started" << std::endl;
+        run_dm_in[i] = dm_in[i](in_buff[i], nullptr, NSAMPLES/4);
     }
+
+    // aie -> s2mm
+    auto dm_out = xrt::kernel(device, uuid, "s2mm:{s2mm_fft_0}");
+    auto out_buff = xrt::bo(device, NPOINTS * samples_size, dm_out.group_id(0)); // 32 * 8 * 1024
+    auto run_dm_out = dm_out(out_buff, nullptr, NSAMPLES/4);
 
     // Wait for kernels to complete
     for (int i = 0; i < NPOINTS; ++ i) {
         run_dm_in[i].wait();
-        run_dm_out[i].wait();
     }
+    run_dm_out.wait();
 
-    for (int i = 0; i < NPOINTS; ++ i) {
-        // Synchronize the output buffer data from the device
-        out_buff[i].sync(XCL_BO_SYNC_BO_FROM_DEVICE);
+    // Synchronize the output buffer data from the device
+    out_buff.sync(XCL_BO_SYNC_BO_FROM_DEVICE);
 
-        // Read output buffer data to local buffer
-        out_buff[i].read(&(fft_result[i * NSAMPLES][0]));
-    }
+    // Read output buffer data to local buffer
+    out_buff.read(fft_result);
 
     // Stop timer
     auto end_time = std::chrono::high_resolution_clock::now();

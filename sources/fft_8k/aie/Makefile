@@ -3,19 +3,17 @@
 # SPDX-License-Identifier: MIT
 
 PLATFORM := xilinx_vck5000_gen4x8_qdma_2_202220_1
-# TARGET := hw
-TARGET := x86sim
+TARGET := hw
+# TARGET := x86sim
 FREQ := 250
 OUTPUT0 := DataOutFFT0.txt
-# OUTPUT1 := DataOutFFT1.txt
-# OUTPUT2 := DataOutFFT2.txt
-# OUTPUT3 := DataOutFFT3.txt
-# OUTPUT4 := DataOutFFT4.txt
-# OUTPUT5 := DataOutFFT5.txt
-# OUTPUT6 := DataOutFFT6.txt
-# OUTPUT7 := DataOutFFT7.txt
 
-XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
+# ##############################
+# CHANGE PLATFORM !!!
+# ##############################
+# XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
+XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
+# ##############################
 XSA = $(strip $(patsubst %.xpfm, % , $(shell basename $(PLATFORM))))
 
 # OUTPUT PRODUCTS 
@@ -55,22 +53,8 @@ aieemu:
 	cd $(BUILD_DIR); \
 	aiesimulator --pkg-dir=$(WORK_DIR) --i=.. --profile --dump-vcd=foo; \
 	cp aiesimulator_output/data/$(OUTPUT0) $(DATA_DIR)/
-	# cp aiesimulator_output/data/$(OUTPUT1) $(DATA_DIR)/; \
-	# cp aiesimulator_output/data/$(OUTPUT2) $(DATA_DIR)/; \
-	# cp aiesimulator_output/data/$(OUTPUT3) $(DATA_DIR)/; \
-	# cp aiesimulator_output/data/$(OUTPUT4) $(DATA_DIR)/; \
-	# cp aiesimulator_output/data/$(OUTPUT5) $(DATA_DIR)/; \
-	# cp aiesimulator_output/data/$(OUTPUT6) $(DATA_DIR)/; \
-	# cp aiesimulator_output/data/$(OUTPUT7) $(DATA_DIR)/
 
 x86sim:
 	cd $(BUILD_DIR); \
 	x86simulator --pkg-dir=$(WORK_DIR) --i=..; \
 	cp x86simulator_output/data/$(OUTPUT0) $(DATA_DIR)/
-	# cp x86simulator_output/data/$(OUTPUT1) $(DATA_DIR)/; \
-	# cp x86simulator_output/data/$(OUTPUT2) $(DATA_DIR)/; \
-	# cp x86simulator_output/data/$(OUTPUT3) $(DATA_DIR)/; \
-	# cp x86simulator_output/data/$(OUTPUT4) $(DATA_DIR)/; \
-	# cp x86simulator_output/data/$(OUTPUT5) $(DATA_DIR)/; \
-	# cp x86simulator_output/data/$(OUTPUT6) $(DATA_DIR)/; \
-	# cp x86simulator_output/data/$(OUTPUT7) $(DATA_DIR)/
