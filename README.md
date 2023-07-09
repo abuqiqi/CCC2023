@@ -19,6 +19,8 @@
 - 工作日志：见本仓库的[backup分支](https://github.com/abuqiqi/CCC2023/tree/backup)。
 
 ## 代码运行
+以本仓库`sources`文件夹下提交的`fft_4k`工程为例，可以执行AIE仿真和硬件运行。
+
 1. AIE仿真
 
 执行以下代码可以单独运行AIE的仿真。
@@ -49,4 +51,24 @@ source ./hacc_demo/env/vck5000_env
 ./hacc_demo/env/vck5000_exit
 ```
 
-执行完毕后，可使用`sources/fft_4k/notebook`文件夹下的`fft.ipynb`验证输出结果。
+执行完毕后，可使用`sources/fft_4k/notebook`文件夹下的`.ipynb`文件验证输出结果。
+
+## 目录说明
+本仓库的主要目录结构如下。
+```
+CCC2023
+├── sources
+│   ├── fft_4k          4K-point FFT完整代码
+│   │   ├── aie
+│   │   ├── execution
+│   │   ├── host
+│   │   ├── hw_link
+│   │   ├── notebook
+│   │   ├── pl
+│   │   └── Makefile
+│   │
+│   └── fft_8k         8K-point FFT完整代码，目录结构同fft_4k
+│
+├── README.md
+└── 设计报告.pdf
+```
