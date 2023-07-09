@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     // aie -> s2mm
     auto dm_out = xrt::kernel(device, uuid, "s2mm:{s2mm_fft_0}");
     auto out_buff = xrt::bo(device, NPOINTS * samples_size, dm_out.group_id(0)); // 32 * 8 * 1024
-    auto run_dm_out = dm_out(out_buff, nullptr, NSAMPLES/4);
+    auto run_dm_out = dm_out(out_buff, nullptr, NPOINTS * NSAMPLES/4);
 
     // Wait for kernels to complete
     for (int i = 0; i < NPOINTS; ++ i) {
