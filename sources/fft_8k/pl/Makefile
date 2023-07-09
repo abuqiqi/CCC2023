@@ -9,8 +9,8 @@ FREQ := 250
 # ##############################
 # CHANGE PLATFORM !!!
 # ##############################
-# XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
-XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
+XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
+# XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
 # ##############################
 
 XSA = $(strip $(patsubst %.xpfm, % , $(shell basename $(PLATFORM))))
