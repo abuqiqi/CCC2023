@@ -51,7 +51,7 @@ source ./hacc_demo/env/vck5000_env
 ./hacc_demo/env/vck5000_exit
 ```
 
-执行完毕后，可使用`sources/fft_4k/notebook`文件夹下的`.ipynb`文件验证输出结果。
+执行完毕后，可使用`sources/fft_4k/notebook`文件夹下的`.ipynb`文件可视化输出结果并进行验证。
 
 ## 目录说明
 本仓库的主要目录结构如下。
