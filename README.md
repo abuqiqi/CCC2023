@@ -12,7 +12,7 @@
 
 - 完成了1024点`cint16`、`cfloat`类型的小规模FFT算法的AIE设计、优化和仿真；
 - 探索了AIE kernel之间的连接，扩展到更大点数（4k、8k）的`cint16`类型的FFT；
-- 实现了PL和AIE的数据连接，可以从host端调用，完成了系统级的仿真并能够在VCK5000硬件上运行。
+- 实现了PL和AIE的数据连接，可以从host端调用，能够在VCK5000硬件上运行。
 
 ## 相关文档
 - 设计报告：[设计报告](https://github.com/abuqiqi/CCC2023/blob/main/%E8%AE%BE%E8%AE%A1%E6%8A%A5%E5%91%8A.pdf)。
