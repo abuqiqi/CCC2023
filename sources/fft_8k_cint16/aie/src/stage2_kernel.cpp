@@ -10,8 +10,8 @@ void fft_stage2(input_window<cint16> *x_in0,input_window<cint16> *x_in1,input_wi
                 input_window<cint16> *x_in4,input_window<cint16> *x_in5,input_window<cint16> *x_in6,input_window<cint16> *x_in7,
                 output_stream<cint16> *y_out)
 {
-    aie::tile tile = aie::tile::current();
-    printf("before stage2: %llu\n", tile.cycles());
+    // aie::tile tile = aie::tile::current();
+    // printf("before stage2: %llu\n", tile.cycles());
 
     cint16 *x0=(cint16*)x_in0->ptr;
     cint16 *x1=(cint16*)x_in1->ptr;
