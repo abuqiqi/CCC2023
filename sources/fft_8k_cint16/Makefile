@@ -5,13 +5,21 @@
 PLATFORM := xilinx_vck5000_gen4x8_qdma_2_202220_1
 TARGET := hw
 
+# ##############################
+# CHANGE PLATFORM !!!
+# ##############################
+# XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
+XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
+# ##############################
+
 XSA = $(strip $(patsubst %.xpfm, % , $(shell basename $(PLATFORM))))
 AIE_DIR = $(shell readlink -f ./aie)
 PL_DIR = $(shell readlink -f ./pl)
 HOST_DIR = $(shell readlink -f ./host)
 HW_LINK = $(shell readlink -f ./hw_link/config.cfg)
+PROFILING_DIR := $(shell readlink -f ./profiling)
 
-XCLBIN_NAME = fft_4k
+XCLBIN_NAME = fft
 JOBS = 16
 
 ifeq (gen4x8,$(findstring gen4x8, $(XSA)))
@@ -20,7 +28,9 @@ else
 	FREQ = 100
 endif
 
-PACKAGE_FLAGS = -t $(TARGET) --platform $(PLATFORM) --save-temps
+PACKAGE_FLAGS = -t $(TARGET) --platform $(XPFM) --save-temps
+PACKAGE_FLAGS += --package.boot_mode=sd
+PACKAGE_FLAGS += --package.sd_file $(PROFILING_DIR)/xrt.ini
 
 VPP_FLAGS = $(PACKAGE_FLAGS)
 VPP_FLAGS += -g --optimize 2
@@ -33,12 +43,12 @@ endif
 
 VPP_LDFLAGS := --vivado.synth.jobs $(JOBS) --vivado.impl.jobs $(JOBS)
 
-BUILD_DIR = build.$(XSA).$(TARGET)
+BUILD_DIR = build.$(TARGET)
 OUTPUT_DIR = $(shell readlink -f ./$(BUILD_DIR))
 
 AIE_SRCS = $(AIE_DIR)/$(BUILD_DIR)/libadf.a
 XO_SRCS = $(PL_DIR)/$(BUILD_DIR)/*.xo
-HOST_APP = $(HOST_DIR)/fft_4k.exe
+HOST_APP = $(HOST_DIR)/host.exe
 
 all: $(OUTPUT_DIR)/${XCLBIN_NAME}.xclbin $(HOST_APP)
 
@@ -76,6 +86,7 @@ $(OUTPUT_DIR)/${XCLBIN_NAME}.xclbin: $(OUTPUT_DIR)/${XCLBIN_NAME}.xsa
 	  --package.boot_mode=ospi \
 	  -o $@ 2>&1 | tee $(XCLBIN_NAME)_xclbin.log
 	@echo "### ***** $(XCLBIN_NAME).xclbin packaging done! *****"
+	cp $(OUTPUT_DIR)/${XCLBIN_NAME}.xclbin ./execution/
 
 clean:
 	rm -rf *.log *.jou .Xil/
