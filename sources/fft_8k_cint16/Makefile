@@ -29,7 +29,7 @@ else
 endif
 
 PACKAGE_FLAGS = -t $(TARGET) --platform $(XPFM) --save-temps
-PACKAGE_FLAGS += --package.boot_mode=sd
+# PACKAGE_FLAGS += --package.boot_mode=sd
 PACKAGE_FLAGS += --package.sd_file $(PROFILING_DIR)/xrt.ini
 
 VPP_FLAGS = $(PACKAGE_FLAGS)
@@ -83,7 +83,7 @@ $(OUTPUT_DIR)/${XCLBIN_NAME}.xclbin: $(OUTPUT_DIR)/${XCLBIN_NAME}.xsa
 	  $(AIE_SRCS) \
 	  --temp_dir _x_temp \
 	  --report_dir reports/ \
-	  --package.boot_mode=ospi \
+	  --package.boot_mode=sd \
 	  -o $@ 2>&1 | tee $(XCLBIN_NAME)_xclbin.log
 	@echo "### ***** $(XCLBIN_NAME).xclbin packaging done! *****"
 	cp $(OUTPUT_DIR)/${XCLBIN_NAME}.xclbin ./execution/
