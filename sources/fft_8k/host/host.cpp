@@ -43,42 +43,35 @@ int main(int argc, char** argv) {
     }
     infile.close();
 
-    // Create datamover objects, in/out buffer
-    xrt::kernel dm_in[NPOINTS];
-    xrt::bo in_buff[NPOINTS];
-    xrt::run run_dm_in[NPOINTS];
     size_t samples_size = sizeof(int16_t) * NSAMPLES * 2; // 32 * 1024
 
     // Start timer
     auto start_time = std::chrono::high_resolution_clock::now();
 
     // mm2s -> aie
-    for (int i = 0; i < NPOINTS; ++ i) {
-        // Get reference to the kernels
-        dm_in[i] = xrt::kernel(device, uuid, "mm2s:{mm2s_fft_"+ std::to_string(i) +"}");
+    // Get reference to the kernels
+    auto dm_in = xrt::kernel(device, uuid, "mm2s:{mm2s_fft_0}");
 
-        // Allocating the input size of sizeIn to MM2S
-        in_buff[i] = xrt::bo(device, samples_size, dm_in[i].group_id(0));
-
-        // Write data to compute unit buffers
-        in_buff[i].write(&(sample_vector[i * NSAMPLES][0]));
-
-        // Synchronize input buffers data to device global memory
-        in_buff[i].sync(XCL_BO_SYNC_BO_TO_DEVICE);
-
-        // Execute the compute units
-        run_dm_in[i] = dm_in[i](in_buff[i], nullptr, NSAMPLES/4);
-    }
+    // Allocating the input size of sizeIn to MM2S
+    auto in_buff = xrt::bo(device, NPOINTS * samples_size, dm_in.group_id(0));
 
     // aie -> s2mm
     auto dm_out = xrt::kernel(device, uuid, "s2mm:{s2mm_fft_0}");
     auto out_buff = xrt::bo(device, NPOINTS * samples_size, dm_out.group_id(0)); // 32 * 8 * 1024
-    auto run_dm_out = dm_out(out_buff, nullptr, NPOINTS * NSAMPLES/4);
+
+    // Write data to compute unit buffers
+    in_buff.write(sample_vector);
+
+    // Synchronize input buffers data to device global memory
+    in_buff.sync(XCL_BO_SYNC_BO_TO_DEVICE);
+
+    // Execute the compute units
+    auto run_dm_in = dm_in(in_buff, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, NPOINTS * NSAMPLES/4);
 
     // Wait for kernels to complete
-    for (int i = 0; i < NPOINTS; ++ i) {
-        run_dm_in[i].wait();
-    }
+    // run_dm_in.wait();
+    
+    auto run_dm_out = dm_out(out_buff, nullptr, NPOINTS * NSAMPLES/4);
     run_dm_out.wait();
 
     // Synchronize the output buffer data from the device

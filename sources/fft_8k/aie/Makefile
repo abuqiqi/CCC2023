@@ -7,12 +7,19 @@ TARGET := hw
 # TARGET := x86sim
 FREQ := 250
 OUTPUT0 := DataOutFFT0.txt
+# OUTPUT1 := DataOutFFT1.txt
+# OUTPUT2 := DataOutFFT2.txt
+# OUTPUT3 := DataOutFFT3.txt
+# OUTPUT4 := DataOutFFT4.txt
+# OUTPUT5 := DataOutFFT5.txt
+# OUTPUT6 := DataOutFFT6.txt
+# OUTPUT7 := DataOutFFT7.txt
 
 # ##############################
 # CHANGE PLATFORM !!!
 # ##############################
-XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
-# XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
+# XPFM = $(shell platforminfo -p $(PLATFORM) --json="file")
+XPFM = $(HOME)/local/opt/xilinx/platforms/$(PLATFORM)/$(PLATFORM).xpfm
 # ##############################
 XSA = $(strip $(patsubst %.xpfm, % , $(shell basename $(PLATFORM))))
 
