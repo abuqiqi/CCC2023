@@ -8,7 +8,7 @@
 
 ## 工作概述
 
-本仓库的main分支是大赛**决赛设计**的提交。决赛阶段针对初赛提交的8k点数的FFT做了进一步优化。
+本分支是大赛**决赛设计**的提交。在初赛作品的基础上，决赛阶段优化了1K、4K、8K点数的AIE设计以及8K点数PL和AIE的连接。
 
 本项目实现的是FFT赛题，从初赛到决赛的整体完成情况如下。
 
@@ -59,18 +59,21 @@ source ./hacc_demo/env/vck5000_env
 执行完毕后，可使用`sources/fft_8k/notebook`文件夹下的`.ipynb`文件可视化输出结果并进行验证。
 
 ## 目录说明
-本仓库的主要目录结构如下。
+决赛提交的主要目录结构如下。
 ```
 CCC2023
 ├── sources
-│   └── fft_8k          8K-point FFT完整代码
-│       ├── aie
-│       ├── execution
-│       ├── host
-│       ├── hw_link
-│       ├── notebook
-│       ├── pl
-│       └── Makefile
+│   ├── fft_8k          8K-point FFT完整代码
+│   │   ├── aie         AIE设计
+│   │   ├── execution   可执行文件
+│   │   ├── host        host端代码
+│   │   ├── hw_link     硬件连接
+│   │   ├── notebook    数据生成、可视化
+│   │   ├── pl          PL设计
+│   │   └── Makefile
+│   │
+│   ├── fft_1k          1K-point FFT AIE代码
+│   └── fft_4k          4K-point FFT AIE代码
 │
 ├── README.md
 ├── 答辩PPT.pptx
