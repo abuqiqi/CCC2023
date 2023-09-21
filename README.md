@@ -5,6 +5,8 @@
 > 指导教师：徐飞老师
 > 
 > 参赛队员：白卓岩、堵仪萱、徐珑珊
+>
+> 最终仓库：[icloud-ecnu/CCC2023](https://github.com/icloud-ecnu/CCC2023)
 
 ## 工作概述
 
